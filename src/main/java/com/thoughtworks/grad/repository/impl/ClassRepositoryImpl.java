@@ -15,6 +15,11 @@ public class ClassRepositoryImpl implements ClassRepository {
 
     @Override
     public ClassRoom addStudent(int classId, Student student) {
-        return ClassStorage.addStudent(classId, student);
+        return null;
     }
+
+//    @Override
+//    public ClassRoom addStudent(int classId, Student student) {
+//        return ClassStorage.addStudent(classId, student);
+//    }
 }

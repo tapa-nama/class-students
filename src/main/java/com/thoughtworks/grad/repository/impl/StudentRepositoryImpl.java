@@ -12,4 +12,9 @@ public class StudentRepositoryImpl implements StudentRepository {
     public Collection<Student> findStudents() {
         return StudentStorage.findStudents();
     }
+
+    @Override
+    public Collection<Student> findStudentsByClassId(int classId) {
+        return StudentStorage.findStudentsByClassId(classId);
+    }
 }

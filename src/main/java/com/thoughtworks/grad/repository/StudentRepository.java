@@ -6,4 +6,6 @@ import java.util.Collection;
 
 public interface StudentRepository {
     Collection<Student> findStudents();
+
+    Collection<Student> findStudentsByClassId(int classId);
 }
