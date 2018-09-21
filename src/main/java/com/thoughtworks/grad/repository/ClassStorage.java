@@ -1,6 +1,7 @@
 package com.thoughtworks.grad.repository;
 
 import com.thoughtworks.grad.domain.ClassRoom;
+import com.thoughtworks.grad.domain.Student;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,9 +15,13 @@ public class ClassStorage {
         return CLASSES.values();
     }
 
-
     public static ClassRoom save(ClassRoom classRoom) {
         CLASSES.put(classRoom.getClassId(), classRoom);
         return CLASSES.get(classRoom.getClassId());
+    }
+
+    public static ClassRoom addStudent(int classId, Student student) {
+        CLASSES.get(classId).getStudents().add(student);
+        return CLASSES.get(classId);
     }
 }

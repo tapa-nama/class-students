@@ -1,10 +1,12 @@
 package com.thoughtworks.grad.controller;
 
 import com.thoughtworks.grad.domain.ClassRoom;
+import com.thoughtworks.grad.domain.Student;
 import com.thoughtworks.grad.repository.ClassRepository;
 import com.thoughtworks.grad.repository.impl.ClassRepositoryImpl;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
@@ -15,6 +17,13 @@ public class ClassController {
     @GetMapping("/api/classes")
     public Collection<ClassRoom> queryUser() {
         return classRepository.findClasses();
+    }
+
+    @PostMapping("/api/classes/{classId}/students")
+    public ResponseEntity addStudentToClass(@PathVariable int classId, @RequestBody Student student) {
+        ClassRoom classRoom = classRepository.addStudent(classId, student);
+        return new ResponseEntity(classRoom, HttpStatus.CREATED);
+
     }
 
 }
