@@ -19,11 +19,17 @@ public class ClassController {
         return classRepository.findClasses();
     }
 
+
     @PostMapping("/api/classes/{classId}/students")
     public ResponseEntity addStudentToClass(@PathVariable int classId, @RequestBody Student student) {
         ClassRoom classRoom = classRepository.addStudent(classId, student);
         return new ResponseEntity(classRoom, HttpStatus.CREATED);
 
+    }
+
+    @GetMapping("/api/classes/{classId}/students")
+    public ClassRoom findAllStudentsOfAClass(@PathVariable int classId) {
+        return null;
     }
 
 }

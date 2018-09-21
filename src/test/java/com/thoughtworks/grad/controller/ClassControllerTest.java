@@ -66,10 +66,24 @@ public class ClassControllerTest {
                 .content(new ObjectMapper().writeValueAsString(student2))).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.classId").value(3))
                 .andExpect(jsonPath("$.className").value("class3"))
-                .andExpect(jsonPath("$.students[0].studentId").value(1))
-                .andExpect(jsonPath("$.students[0].studentName").value("zhang san"))
-                .andExpect(jsonPath("$.students[0].age").value(15));
+                .andExpect(jsonPath("$.students[1].studentId").value(2))
+                .andExpect(jsonPath("$.students[1].studentName").value("li si"))
+                .andExpect(jsonPath("$.students[1].age").value(16));
+    }
 
+    @Test
+    void should_find_all_the_students_of_a_class() throws Exception {
+        Student student3 = new Student(3, "wang wu", 18);
+        Student student4 = new Student(4, "xiao ming", 16);
+        Student student5 = new Student(5, "xiao hong", 15);
+        ArrayList<Student> students = new ArrayList<>();
+        students.add(student3);
+        students.add(student4);
+        students.add(student5);
+        ClassStorage.save(new ClassRoom(5, "class5", students));
+
+        mockMvc.perform(get("/api/classes/5/students")).andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(3)));
     }
 }
 
