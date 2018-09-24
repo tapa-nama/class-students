@@ -24,4 +24,9 @@ public class StudentRepositoryImpl implements StudentRepository {
     public Student addStudentToClass(int classId, Student student) {
         return StudentStorage.addStudentToClass(classId, student);
     }
+
+    @Override
+    public Collection<Student> findStudentsByClassIdAndAge(int classId, Integer age) {
+        return StudentStorage.findStudentsByClassIdAndAge(classId, age);
+    }
 }

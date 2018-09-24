@@ -66,9 +66,9 @@ public class ClassControllerTest {
         Student student2 = new Student(2, "xiao ming", 16, 2);
         Student student3 = new Student(3, "xiao hong", 15, 3);
         Student student4 = new Student(4, "xiao wang", 15, 5);
-        Student student5 = new Student(5, "xiao li", 15, 5);
-        Student student6 = new Student(6, "xiao hang", 15, 5);
-        Student student7 = new Student(7, "xiao mi", 15, 5);
+        Student student5 = new Student(5, "xiao li", 21, 5);
+        Student student6 = new Student(6, "xiao hang", 23, 5);
+        Student student7 = new Student(7, "xiao mi", 16, 5);
 
         StudentStorage.saveStudent(student1);
         StudentStorage.saveStudent(student2);
@@ -84,6 +84,14 @@ public class ClassControllerTest {
                 .andExpect(jsonPath("$[1].studentName").value("xiao li"))
                 .andExpect(jsonPath("$[2].studentName").value("xiao hang"))
                 .andExpect(jsonPath("$[3].studentName").value("xiao mi"));
+    }
+
+    @Test
+    void should_find_students_whose_age_is_larger_than_20_in_class_5() throws Exception {
+        mockMvc.perform(get("/api/classes/5/students?age=20")).andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].studentName").value("xiao li"))
+                .andExpect(jsonPath("$[1].studentName").value("xiao hang"));
     }
 }
 

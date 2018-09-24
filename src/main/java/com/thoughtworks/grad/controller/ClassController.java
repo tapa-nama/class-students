@@ -29,9 +29,15 @@ public class ClassController {
     }
 
     @GetMapping("/api/classes/{classId}/students")
-    public Collection<Student> findAllStudentsOfAClass(@PathVariable int classId) {
-        return studentRepository.findStudentsByClassId(classId);
+    public Collection<Student> findAllStudentsOfAClass(@PathVariable int classId, @RequestParam(value = "age",required = false) Integer age) {
+        if (age == null) {
+            return studentRepository.findStudentsByClassId(classId);
+        }
+        return studentRepository.findStudentsByClassIdAndAge(classId, age);
+
     }
+
+
 
 
 }

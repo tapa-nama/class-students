@@ -33,4 +33,14 @@ public class StudentStorage {
         STUDENTS.put(student.getStudentId(), student);
         return student;
     }
+
+    public static Collection<Student> findStudentsByClassIdAndAge(int classId, Integer age) {
+        ArrayList<Student> resultStudents = new ArrayList<>();
+        for (Map.Entry<Integer, Student> entry : STUDENTS.entrySet()) {
+            if (entry.getValue().getClassId() == classId && entry.getValue().getAge() > 20) {
+                resultStudents.add(entry.getValue());
+            }
+        }
+        return resultStudents;
+    }
 }

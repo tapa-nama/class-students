@@ -10,4 +10,6 @@ public interface StudentRepository {
     Collection<Student> findStudentsByClassId(int classId);
 
     Student addStudentToClass(int classId, Student student);
+
+    Collection<Student> findStudentsByClassIdAndAge(int classId, Integer age);
 }
