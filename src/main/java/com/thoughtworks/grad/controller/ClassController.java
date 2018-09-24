@@ -4,8 +4,7 @@ import com.thoughtworks.grad.domain.ClassRoom;
 import com.thoughtworks.grad.domain.Student;
 import com.thoughtworks.grad.repository.ClassRepository;
 import com.thoughtworks.grad.repository.StudentRepository;
-import com.thoughtworks.grad.repository.impl.ClassRepositoryImpl;
-import com.thoughtworks.grad.repository.impl.StudentRepositoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,20 +13,19 @@ import java.util.Collection;
 
 @RestController
 public class ClassController {
-    private ClassRepository classRepository = new ClassRepositoryImpl();
-    private StudentRepository studentRepository = new StudentRepositoryImpl();
+    @Autowired
+    private ClassRepository classRepository;
+    @Autowired
+    private StudentRepository studentRepository;
 
     @GetMapping("/api/classes")
-    public Collection<ClassRoom> queryUser() {
+    public Collection<ClassRoom> queryClasses() {
         return classRepository.findClasses();
     }
 
-
     @PostMapping("/api/classes/{classId}/students")
     public ResponseEntity addStudentToClass(@PathVariable int classId, @RequestBody Student student) {
-        ClassRoom classRoom = classRepository.addStudent(classId, student);
-        return new ResponseEntity(classRoom, HttpStatus.CREATED);
-
+        return new ResponseEntity(studentRepository.addStudentToClass(classId, student), HttpStatus.CREATED);
     }
 
     @GetMapping("/api/classes/{classId}/students")

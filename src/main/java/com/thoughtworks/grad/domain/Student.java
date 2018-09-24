@@ -48,9 +48,5 @@ public class Student {
     public Student() {
     }
 
-    public Student(int studentId, String studentName, int age) {
-        this.studentId = studentId;
-        this.studentName = studentName;
-        this.age = age;
-    }
+
 }

@@ -14,9 +14,9 @@ public class StudentStorage {
         return STUDENTS.values();
     }
 
-    public static Student save(Student student) {
+    public static Student saveStudent(Student student) {
         STUDENTS.put(student.getStudentId(), student);
-        return STUDENTS.get(student.getStudentId());
+        return student;
     }
 
     public static Collection<Student> findStudentsByClassId(int classId) {
@@ -27,5 +27,10 @@ public class StudentStorage {
             }
         }
         return resultStudents;
+    }
+
+    public static Student addStudentToClass(int classId, Student student) {
+        STUDENTS.put(student.getStudentId(), student);
+        return student;
     }
 }

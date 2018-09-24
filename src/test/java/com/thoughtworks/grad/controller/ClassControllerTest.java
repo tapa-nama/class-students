@@ -1,31 +1,41 @@
 package com.thoughtworks.grad.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.grad.domain.ClassRoom;
 import com.thoughtworks.grad.domain.Student;
 import com.thoughtworks.grad.repository.ClassStorage;
 import com.thoughtworks.grad.repository.StudentStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
 public class ClassControllerTest {
     private MockMvc mockMvc;
 
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+
     @BeforeEach
-    void setUp() {
-        mockMvc = standaloneSetup(controller()).build();
-
+    void setup() {
+        mockMvc = webAppContextSetup(webApplicationContext).build();
     }
 
-    private ClassController controller() {
-        return new ClassController();
-    }
 
     @Test
     void should_find_all_the_classes() throws Exception {
@@ -38,34 +48,17 @@ public class ClassControllerTest {
                 .andExpect(jsonPath("$[1].className").value("class2"));
     }
 
- /*   @Test
-    void should_find_a_class() throws Exception {
-        ClassStorage.save(new ClassRoom(1, "class1"));
-        ClassStorage.save(new ClassRoom(2, "class2"));
-        ClassStorage.save(new ClassRoom(3, "class3"));
-        ClassStorage.save(new ClassRoom(4, "class4"));
 
-        mockMvc.perform(get("/api/classes/3")).andExpect(status().isOk())
-                .andExpect(jsonPath())
-    }*/
-
-/*    @Test
+    @Test
     void should_add_a_student_to_a_class() throws Exception {
-        Student student1 = new Student(1, "zhang san", 15);
-        ArrayList<Student> students = new ArrayList<>();
-        students.add(student1);
-
-        ClassStorage.save(new ClassRoom(3, "class3", students));
-        Student student2 = new Student(2, "li si", 16);
+        Student student = new Student(1, "zhang san", 15, 3);
 
         mockMvc.perform(post("/api/classes/3/students").contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(new ObjectMapper().writeValueAsString(student2))).andExpect(status().isCreated())
-                .andExpect(jsonPath("$.classId").value(3))
-                .andExpect(jsonPath("$.className").value("class3"))
-                .andExpect(jsonPath("$.students[1].studentId").value(2))
-                .andExpect(jsonPath("$.students[1].studentName").value("li si"))
-                .andExpect(jsonPath("$.students[1].age").value(16));*/
-//}
+                .content(new ObjectMapper().writeValueAsString(student))).andExpect(status().isCreated())
+                .andExpect(jsonPath("$.studentName").value("zhang san"))
+                .andExpect(jsonPath("$.classId").value(3));
+
+    }
 
     @Test
     void should_find_all_the_students_of_a_class() throws Exception {
@@ -77,13 +70,13 @@ public class ClassControllerTest {
         Student student6 = new Student(6, "xiao hang", 15, 5);
         Student student7 = new Student(7, "xiao mi", 15, 5);
 
-        StudentStorage.save(student1);
-        StudentStorage.save(student2);
-        StudentStorage.save(student3);
-        StudentStorage.save(student4);
-        StudentStorage.save(student5);
-        StudentStorage.save(student6);
-        StudentStorage.save(student7);
+        StudentStorage.saveStudent(student1);
+        StudentStorage.saveStudent(student2);
+        StudentStorage.saveStudent(student3);
+        StudentStorage.saveStudent(student4);
+        StudentStorage.saveStudent(student5);
+        StudentStorage.saveStudent(student6);
+        StudentStorage.saveStudent(student7);
 
         mockMvc.perform(get("/api/classes/5/students")).andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(4)))
